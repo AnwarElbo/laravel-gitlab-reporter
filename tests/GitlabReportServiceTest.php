@@ -14,10 +14,10 @@ class GitlabReportServiceTest extends TestCase
 
     public function setUp()
     {
-        $url                = 'https://gitlab.com/AnwarElbo/xtv';
-        $token              = 'yaFcdyAJh7P3VHoeCtCs';
-        $project_id         = '8974475';
-        $labels             = 'To Do';
+        $url                = '';
+        $token              = '';
+        $project_id         = '';
+        $labels             = '';
         $ignored_exceptions = [];
 
         $this->gitlab_report_service = new GitlabReportService(
