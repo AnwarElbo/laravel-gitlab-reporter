@@ -33,13 +33,6 @@ class GitlabReportService
     private $labels;
 
     /**
-     * Contains all classes that will be ignored
-     *
-     * @var array
-     */
-    private $ignoreExceptions;
-
-    /**
      * Current request
      *
      * @var Request
@@ -58,22 +51,19 @@ class GitlabReportService
      * @param string $token
      * @param string $project_id
      * @param string $labels
-     * @param array $ignoreExceptions
      */
     public function __construct(
         string $url,
         string $token,
         string $project_id,
-        string $labels,
-        array $ignoreExceptions
+        string $labels
     ) {
         $container = Container::getInstance();
 
-        $this->client           = Client::create($url)->authenticate($token, Client::AUTH_URL_TOKEN);
-        $this->request          = $container->make(Request::class);
-        $this->project_id       = $project_id;
-        $this->labels           = $labels;
-        $this->ignoreExceptions = $ignoreExceptions;
+        $this->client     = Client::create($url)->authenticate($token, Client::AUTH_URL_TOKEN);
+        $this->request    = $container->make(Request::class);
+        $this->project_id = $project_id;
+        $this->labels     = $labels;
     }
 
 
@@ -85,10 +75,8 @@ class GitlabReportService
      *
      * @throws Exception
      */
-    public function report(Exception $exception){
-        if ($this->isIgnored($exception)) {
-            return;
-        }
+    public function report(Exception $exception)
+    {
 
         try {
             // Get current request
@@ -128,7 +116,7 @@ class GitlabReportService
     private function reporter(Exception $exception){
         // Get right reporter
         $rc = DefaultReport::class;
-        
+
         foreach($this->reporters as $key => $reporter){
             if(is_a($exception, $key)){
                 $rc = $reporter;
@@ -136,25 +124,5 @@ class GitlabReportService
         }
 
         return $rc;
-    }
-
-    /**
-     * Returns if the exception is ignored based on the configuration
-     *
-     * @param Exception $exception
-     *
-     * @return bool
-     */
-    private function isIgnored(Exception $exception){
-        $ignored = false;
-
-        foreach($this->ignoreExceptions as $class){
-            if(is_a($exception, $class)){
-               $ignored = true;
-               break;
-            }
-        }
-
-        return $ignored;
     }
 }

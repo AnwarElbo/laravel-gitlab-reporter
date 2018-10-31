@@ -14,18 +14,16 @@ class GitlabReportServiceTest extends TestCase
 
     public function setUp()
     {
-        $url                = '';
-        $token              = '';
-        $project_id         = '';
-        $labels             = '';
-        $ignored_exceptions = [];
+        $url         = '';
+        $token       = '';
+        $project_id  = '';
+        $labels      = '';
 
         $this->gitlab_report_service = new GitlabReportService(
             $url,
             $token,
             $project_id,
-            $labels,
-            $ignored_exceptions
+            $labels
         );
     }
 

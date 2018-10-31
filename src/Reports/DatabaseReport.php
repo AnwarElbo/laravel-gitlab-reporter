@@ -1,26 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ivodebruijn
- * Date: 04/07/2018
- * Time: 23:32
- */
 
 namespace Xolvio\GitlabReport\Reports;
 
-use Exception;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class DatabaseReport extends DefaultReport
 {
-
-    public function title()
-    {
-        return "DATABASE: " . $this->message();
-    }
-
     /**
      * Generates a description for the report
      * @return string

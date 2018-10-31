@@ -2,8 +2,6 @@
 
 namespace Xolvio\GitlabReport;
 
-use Illuminate\Container\Container;
-
 /**
  * @package Xolvio\GitlabReport
  */
@@ -20,15 +18,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->mergeConfigFrom( __DIR__ . '/../config/gitlab-report.php', 'gitlab-report');
 
-        $this->app->singleton(GitlabReportService::class, function(Container $app) {
-            $config         = $app->make('config');
-            $url            = $config->get('gitlab-report.url');
-            $token          = $config->get('gitlab-report.token');
-            $project_id     = $config->get('gitlab-report.project_id');
-            $labels         = $config->get('gitlab-report.labels');
-            $ignore         = $config->get('gitlab-report.ignore-exceptions', []);
+        $this->app->singleton(GitlabReportService::class, function() {
+            $url            = env('GITLAB_REPORT_URL');
+            $token          = env('GITLAB_REPORT_TOKEN');
+            $project_id     = env('GITLAB_REPORT_PROJECT_ID');
+            $labels         = env('GITLAB_REPORT_LABELS');
 
-            return new GitlabReportService($url, $token, $project_id, $labels, $ignore);
+            return new GitlabReportService($url, $token, $project_id, $labels);
         });
 
         $this->app->alias(GitlabReportService::class, 'gitlab.report');

@@ -1,8 +1,4 @@
 <?php
-/**
- *
- * @author Anwar el Bouhdifi <ivo@idobits.nl>
- */
 
 namespace Xolvio\GitlabReport\Reports;
 
@@ -63,7 +59,7 @@ class DefaultReport
     {
         // Max length for gitlab titles = 255.
         // Message will be in the description of an issue anyways.
-        return "BUG: " . substr($this->message(), 0, 200);
+        return "BUG: " . substr($this->message(), 0, 100);
     }
 
     /**
