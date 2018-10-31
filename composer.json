@@ -1,5 +1,5 @@
 {
-    "name": "wyox/laravel-gitlab-reporter",
+    "name": "xolvio/laravel-gitlab-reporter",
     "description": "GitLab error reporter for Laravel 5",
     "type": "library",
     "keywords": ["gitlab", "error reporting"],
@@ -10,10 +10,9 @@
         "m4tthumphrey/php-gitlab-api": "^9.10",
         "php-http/guzzle6-adapter": "^1.1"
     },
-    "authors": [
-        {
-            "name": "Ivo de Bruijn",
-            "email": "ivo@idobits.nl"
+    "authors": [{
+            "name": "Anwar el Bouhdifi",
+            "email": "anwar.elbouhdifi@gmail.com"
         }
     ],
     "autoload":{
