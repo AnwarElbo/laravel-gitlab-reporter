@@ -6,7 +6,7 @@
  * Time: 23:32
  */
 
-namespace Wyox\GitlabReport\Reports;
+namespace Xolvio\GitlabReport\Reports;
 
 use Exception;
 use Illuminate\Database\QueryException;
@@ -36,7 +36,6 @@ class DatabaseReport extends DefaultReport
      * @return string
      */
     protected function renderSQL(){
-        $exception = $this->exception;
         $str = "#### SQL\n\n```sql\n";
         $str .= Str::replaceArray('?', $this->exception->getBindings(), $this->exception->getSql()) . $this->newline();
         $str .= "```" . $this->newline();

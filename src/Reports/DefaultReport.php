@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @author Ivo de Bruijn <ivo@idobits.nl>
+ * @author Anwar el Bouhdifi <ivo@idobits.nl>
  */
 
-namespace Wyox\GitlabReport\Reports;
+namespace Xolvio\GitlabReport\Reports;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -25,39 +25,30 @@ class DefaultReport
 
     public function __construct(Exception $exception, Request $request)
     {
-        $this->exception    = $exception;
-        $this->request      = $request;
-
-
+        $this->exception = $exception;
+        $this->request   = $request;
 
         // Get all input from the user
-        $this->get      = collect($request->query->all());
-        $this->form     = collect($request->request->all());
+        $this->get  = collect($request->query->all());
+        $this->form = collect($request->request->all());
 
         // Request variables
-        $this->path     = $request->getPathInfo();
+        $this->path       = $request->getPathInfo();
         $this->httpMethod = $request->getMethod();
-        $this->host     = $request->getHttpHost();
-        $this->url      = $request->getRequestUri();
-        $this->schema   = $request->getScheme();
+        $this->host       = $request->getHttpHost();
+        $this->url        = $request->getRequestUri();
+        $this->schema     = $request->getScheme();
 
         // Session information
-        $this->session  = $request->hasSession() ? $request->session()->all() : collect();
-    }
-
-    /**
-     * Same as description
-     * @return string
-     */
-    public function render(){
-        return $this->description();
+        $this->session = $request->hasSession() ? $request->session()->all() : collect();
     }
 
     /**
      * Generates a description for the report
      * @return string
      */
-    public function description(){
+    public function description()
+    {
         // Return html string in Gitlab flavoured markdown
         // Due to the render identifier being so close to renderSummary the current markdown version of Gitlab (11.0.2) renders the identifier invisible.
         // Highly likely to change if the markdown render engine changes in future versions. For now it's a simple hack to get around EE requirements for custom variables
@@ -68,7 +59,8 @@ class DefaultReport
      * Generates a GitLab issue title
      * @return string
      */
-    public function title(){
+    public function title()
+    {
         // Max length for gitlab titles = 255.
         // Message will be in the description of an issue anyways.
         return "BUG: " . substr($this->message(), 0, 200);
@@ -79,7 +71,8 @@ class DefaultReport
      * @return string
      */
 
-    public function signature(){
+    public function signature()
+    {
         // Signature should be unique to the error (ignore session for now)
         $key = $this->message() . $this->exception->getFile() . $this->exception->getTraceAsString() . $this->exception->getCode();
         // This might fail if it has complex objects
@@ -94,7 +87,8 @@ class DefaultReport
      * Returns a human readable severity code instead of a number. (e.g. E_NOTICE)
      * @return string
      */
-    protected function message(){
+    protected function message()
+    {
         $str = $this->exception->getMessage();
 
         if(empty($str)){
@@ -108,7 +102,8 @@ class DefaultReport
      * Renders FORM data
      * @return string
      */
-    protected function renderForm(){
+    protected function renderForm()
+    {
         $str = "#### Post Params\n\n```php\n";
         $str .= $this->renderValue($this->form);
         $str .= "```" . $this->newline();
@@ -119,7 +114,8 @@ class DefaultReport
      * Renders URL parameters
      * @return string
      */
-    protected function renderUrl(){
+    protected function renderUrl()
+    {
         $str = "#### Url Params\n\n```php\n";
         $str .= $this->renderValue($this->get);
         $str .= "```" . $this->newline();
@@ -130,7 +126,8 @@ class DefaultReport
      * Renders session values
      * @return string
      */
-    protected function renderSession(){
+    protected function renderSession()
+    {
         $session = $this->session;
         $str = "#### Session Params\n\n```php\n";
         $str .= $this->renderValue($session);
@@ -143,7 +140,8 @@ class DefaultReport
      * @param $value
      * @return string
      */
-    protected function renderValue($value){
+    protected function renderValue($value)
+    {
         $cloner = new VarCloner();
         $dumper = new CliDumper();
         $output = '';
@@ -154,7 +152,7 @@ class DefaultReport
                 // A negative depth means "end of dump"
                 if ($depth >= 0) {
                     // Adds a two spaces indentation to the line
-                    $output .= str_repeat('  ', $depth).$line."\n";
+                    $output .= str_repeat('  ', $depth).$line . "\n";
                 }
             }
         );
@@ -167,7 +165,8 @@ class DefaultReport
      * @param $value
      * @return string
      */
-    protected function renderSummary(){
+    protected function renderSummary()
+    {
         $exception = get_class($this->exception);
 
         return <<<EOF
@@ -195,8 +194,6 @@ EOF;
 ```php
 {$this->exception->getTraceAsString()}
 ```
-
-
 EOF;
 
     }
@@ -209,7 +206,6 @@ EOF;
 
         return <<<EOF
             Identifier: `{$signature}`
-
 EOF;
 
     }
@@ -221,6 +217,4 @@ EOF;
     protected function newline(){
         return "\n\r\n\r";
     }
-
-
 }

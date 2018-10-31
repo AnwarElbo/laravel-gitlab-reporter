@@ -1,9 +1,17 @@
 <?php
 
-namespace Wyox\GitlabReport;
+namespace Xolvio\GitlabReport;
 
-class Facade extends \Illuminate\Support\Facades\Facade {
-    protected static function getFacadeAccessor() {
+/**
+ * @package Xolvio\GitlabReport
+ */
+class Facade extends \Illuminate\Support\Facades\Facade
+{
+    /**
+     * @return string
+     */
+    protected static function getFacadeAccessor()
+    {
         return GitlabReportService::class;
     }
 }

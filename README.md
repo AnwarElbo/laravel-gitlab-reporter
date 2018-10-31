@@ -13,7 +13,7 @@ Gitlab version 9 or higher required.
 Install with composer
 
 ```bash 
-composer require wyox/laravel-gitlab-reporter
+composer require Xolvio/laravel-gitlab-reporter
 ```
 
 To use the Gitlab reporter you should change the following in your `app/Exceptions/Handler.php` file in your Laravel project
