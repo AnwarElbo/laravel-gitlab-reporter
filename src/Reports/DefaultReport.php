@@ -48,7 +48,7 @@ class DefaultReport
         // Return html string in Gitlab flavoured markdown
         // Due to the render identifier being so close to renderSummary the current markdown version of Gitlab (11.0.2) renders the identifier invisible.
         // Highly likely to change if the markdown render engine changes in future versions. For now it's a simple hack to get around EE requirements for custom variables
-        return $this->renderSummary() . $this->renderIdentifier() . $this->renderUrl() . $this->renderForm() . $this->renderSession() . $this->renderException();
+        return $this->renderSummary() . $this->renderIdentifier() . $this->renderUrl() . $this->renderForm() . $this->renderSession() . $this->renderServer() . $this->renderException();
     }
 
     /**
@@ -129,6 +129,15 @@ class DefaultReport
         $str .= $this->renderValue($session);
         $str .= "```" . $this->newline();
         return $str;
+    }
+
+    protected function renderServer()
+    {
+        $output = "### Server params \n\n ```php \n";
+        $output .= $this->renderValue($_SERVER);
+        $output .= "```" . $this->newline();
+
+        return $output;
     }
 
     /**
